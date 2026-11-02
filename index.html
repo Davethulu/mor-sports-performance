@@ -183,6 +183,13 @@ h1 { font-size: clamp(48px, 9vw, 108px); line-height: .92; letter-spacing: -.01e
 header { padding-top: 88px; }
 .cta.top { margin-top: 40px; }
 @media (max-width: 760px) { header { padding-top: 48px; } }
+/* Contact tile icons: a tinted badge that nudges on hover */
+.cta-card .ico { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; margin-bottom: 4px;
+  color: var(--accent); background: rgba(40,191,161,.13); box-shadow: inset 0 0 0 1px rgba(40,191,161,.25);
+  transition: transform .35s cubic-bezier(.2,.7,.2,1), background .25s; }
+.cta-card .ico svg { width: 24px; height: 24px; }
+.cta-card:hover .ico { transform: translateY(-2px) rotate(-6deg); background: rgba(40,191,161,.2); }
+@media (prefers-reduced-motion: reduce) { .cta-card .ico { transition: none; } }
 </style>
 </head>
 <body>
@@ -195,18 +202,21 @@ header { padding-top: 88px; }
 <div class="h1-rule"></div>
 <div class="cta top">
   <div class="cta-card">
+    <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></span>
     <div class="kicker">Refer an athlete</div>
     <p>Send us your athletes and we'll take it from there.</p>
     <a class="btn" href="mailto:spc@rushortho.com">spc@rushortho.com</a>
     <a class="btn ghost" href="tel:+17084925782">708-492-5782</a>
   </div>
   <div class="cta-card">
+    <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="m9 15 2 2 4-4"/></svg></span>
     <div class="kicker">Schedule</div>
     <p>Book with MOR Sports Performance online.</p>
     <a class="btn" href="https://www.rushortho.com/specialties-services/sports-performance-and-recovery/sports-performance-scheduling/" target="_blank" rel="noopener">Schedule a session</a>
     <div class="code">Use code <b>MORSPC</b> for $25 off your first session</div>
   </div>
   <div class="cta-card">
+    <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></span>
     <div class="kicker">Book in the Mindbody app</div>
     <p>Search for <b>Midwest Orthopaedics</b> in the Mindbody app.</p>
     <a class="btn ghost" href="https://apps.apple.com/us/app/mindbody-fitness-wellness/id689501356" target="_blank" rel="noopener">App Store (iOS)</a>
