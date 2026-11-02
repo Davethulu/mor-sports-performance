@@ -177,10 +177,9 @@ body { position: relative; }
 .cta-card:hover::after, .card:hover::after { opacity: 1; }
 .viewing .aura i { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .aura i { animation: none; } .cta-card::after, .card::after { display: none; } }
-/* Bigger headline with a one-line tagline under it */
+/* Bigger headline */
 h1 { font-size: clamp(48px, 9vw, 108px); line-height: .92; letter-spacing: -.01em; }
 .h1-rule { margin-top: 22px; }
-.lede { max-width: 640px; margin-top: 20px; font-size: clamp(18px, 2vw, 22px); line-height: 1.45; color: var(--muted); }
 header { padding-top: 88px; }
 .cta.top { margin-top: 40px; }
 @media (max-width: 760px) { header { padding-top: 48px; } }
@@ -194,7 +193,6 @@ header { padding-top: 88px; }
 <div class="kicker">Sample reports</div>
 <h1>MOR Sports Performance</h1>
 <div class="h1-rule"></div>
-<p class="lede">Motion capture, force plates and strength testing that show how an athlete moves, why they move that way, and what to do about it.</p>
 <div class="cta top">
   <div class="cta-card">
     <div class="kicker">Refer an athlete</div>
@@ -285,7 +283,7 @@ header { padding-top: 88px; }
 // Entrances: the header settles in, then sections and cards rise in as they scroll into view
 (function polish() {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const groups = [['header .kicker, header h1, .lede', 0, .08], ['.cta-card', .2, .09], ['.notice', .48, 0], ['.about > div, .steps li', 0, .08],
+  const groups = [['header .kicker, header h1', 0, .08], ['.cta-card', .2, .09], ['.notice', .48, 0], ['.about > div, .steps li', 0, .08],
                   ['.app', 0, 0], ['h2, .open-hint', 0, .05], ['.card', 0, .08], ['footer', 0, 0]];
   const els = [];
   groups.forEach(([sel, base, step]) => document.querySelectorAll(sel).forEach((el, i) => {
