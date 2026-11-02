@@ -316,7 +316,8 @@ header { padding-top: 88px; }
 #viewer { position: fixed; inset: 0; z-index: 50; background: var(--bg); }
 #viewer[hidden] { display: none; }
 #viewer-msg { position: absolute; inset: 0; display: grid; place-items: center; font: 600 18px 'Barlow', sans-serif; color: var(--muted); }
-#viewer-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; }
+#viewer-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; opacity: 0; transition: opacity .35s; }
+#viewer-frame.ready { opacity: 1; }
 body.viewing { overflow: hidden; }
 .noscript { margin: 16px auto; max-width: 1040px; padding: 14px 18px; border: 1px solid var(--accent); border-radius: 10px; }
 </style>
@@ -368,14 +369,39 @@ body.viewing { overflow: hidden; }
     for (const k of keys) parts[k] = await expand(await unpack('p-' + k));
     return s.replace(/@@([0-9a-f]{12})@@/g, (m, k) => parts[k]);
   }
+  // Opening grows the report out of its card; closing shrinks it back into the card
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let shown = '', anim = null, scrollY0 = 0;
+  const zoom = (name, opening) => {
+    const card = document.querySelector('.card[href="#' + name + '"]');
+    if (still || !card || !box.animate) return null;
+    const r = card.getBoundingClientRect(), W = innerWidth, H = innerHeight;
+    if (r.bottom < 0 || r.top > H) return null;   // card scrolled off screen: no zoom
+    const at = `inset(${r.top}px ${W - r.right}px ${H - r.bottom}px ${r.left}px round 14px)`, full = 'inset(0px 0px 0px 0px round 0px)';
+    return box.animate({ clipPath: opening ? [at, full] : [full, at], opacity: opening ? [.6, 1] : [1, .4] },
+                       { duration: opening ? 520 : 400, easing: 'cubic-bezier(.2,.7,.2,1)' });
+  };
   async function show() {
     const name = location.hash.slice(1);
-    if (!TITLES[name]) { box.hidden = true; document.body.classList.remove('viewing'); if (frame) { frame.remove(); frame = null; } document.title = HOME_TITLE; return; }
+    if (anim) { anim.cancel(); anim = null; }
+    if (!TITLES[name]) {
+      const was = shown; shown = ''; document.body.classList.remove('viewing'); document.title = HOME_TITLE;
+      if (was) scrollTo(0, scrollY0);   // clearing the # jumps to the top; come back to the card instead
+      const done = () => { if (shown) return; box.hidden = true; if (frame) { frame.remove(); frame = null; } };
+      if (was && !box.hidden && (anim = zoom(was, false))) anim.onfinish = done; else done();
+      return;
+    }
+    const fresh = box.hidden; shown = name;
+    if (fresh) scrollY0 = scrollY;
     box.hidden = false; document.body.classList.add('viewing'); msg.textContent = 'Opening the report\u2026';
+    if (fresh) anim = zoom(name, true);
     if (!('DecompressionStream' in window)) { msg.textContent = 'Please open this file in an up-to-date Chrome, Edge or Safari to view the reports.'; return; }
     try {
       const html = await expand(await unpack('r-' + name));
-      if (location.hash.slice(1) === name) newFrame().srcdoc = html;
+      if (location.hash.slice(1) === name) {
+        const f = newFrame(); f.srcdoc = html;
+        f.onload = () => { f.classList.add('ready'); msg.textContent = ''; };   // fade the report in once it has drawn
+      }
       document.title = TITLES[name] + ' \u00b7 Sample report';
     } catch (e) { msg.textContent = 'This report could not be opened in this browser. Please try Chrome, Edge or Safari.'; }
   }
