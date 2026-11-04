@@ -268,7 +268,7 @@ header { padding-top: 88px; }
   <a class="card" href="#pitching">
     <div class="fig" data-fig="pitching" aria-hidden="true"><canvas></canvas></div>
     <div class="who">High school right-handed pitcher · performance</div>
-    <div class="t">Baseball Pitching Assessment</div>
+    <div class="t">Throwing Assessment</div>
     <p>Every throw in 3D from leg lift to release, the kinematic sequence and elbow stress, tied to strength and mobility.</p>
     <div class="tags"><span>3D motion capture</span><span>Elbow stress</span><span>Shoulder strength</span><span>Lower half</span><span>Range of motion</span></div>
     <div class="go">Open report &rarr;</div>
@@ -354,7 +354,7 @@ body.viewing { overflow: hidden; }
     box.appendChild(frame);
     return frame;
   };
-  const TITLES = {"lower-body": "Lower Body Assessment", "running": "Running Assessment", "pitching": "Baseball Pitching Assessment", "softball": "Softball Pitching Assessment"}, cache = {};
+  const TITLES = {"lower-body": "Lower Body Assessment", "running": "Running Assessment", "pitching": "Throwing Assessment", "softball": "Softball Pitching Assessment"}, cache = {};
   const unpack = async id => {
     if (cache[id] != null) return cache[id];
     const el = document.getElementById(id);
